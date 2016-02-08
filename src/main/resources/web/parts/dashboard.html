@@ -1,0 +1,18 @@
+<h3>Dashboard</h3>
+<h4>Console:</h4>
+<pre>
+    <p ng-repeat="item in console track by $index">{{item}}</p>
+</pre>
+<form ng-submit="sendCommand()">
+    <input type="text" placeholder=">" ng-model="command" class="form-control">
+</form>
+<h4>Players:</h4>
+<div class="btn-group" ng-repeat="user in users track by $index" style="margin-left: 5px;">
+    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><img
+            src="https://minotar.net/avatar/{{user}}/32.png">&nbsp;<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a ng-click="kick(user)">Kick</a></li>
+        <li><a ng-click="ban(user)">Ban</a></li>
+        <li><a ng-click="pardon(user)">Unban</a></li>
+    </ul>
+</div>

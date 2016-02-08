@@ -1,0 +1,7 @@
+name: MCWebinterface
+version: 1.0
+main: de.alexdigital.mcwi.McWebinterface
+
+commands:
+  mcwi:
+    description: General MCWI Command
