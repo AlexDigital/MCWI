@@ -1,0 +1,13 @@
+<h3>Players:</h3>
+<div class="btn-group" ng-repeat="user in users track by $index" style="margin-left: 5px;">
+    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><img
+            src="https://minotar.net/avatar/{{user}}/32.png">&nbsp;<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a style="cursor: pointer">{{user}}</a></li>
+        <li class="divider"></li>
+        <li><a style="cursor: pointer" ng-click="kick(user)">Kick</a></li>
+        <li><a style="cursor: pointer" ng-click="ban(user)">Ban</a></li>
+        <li><a style="cursor: pointer" ng-click="pardon(user)">Unban</a></li>
+        <li><a style="cursor: pointer" ng-click="op(user)">OP</a></li>
+    </ul>
+</div>

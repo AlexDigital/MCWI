@@ -1,0 +1,24 @@
+<h3>Plugins:</h3>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Version</th>
+        <th>Author(s)</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="plugin in plugins track by $index">
+        <td>{{$index}}</td>
+        <td>{{plugin.name}}</td>
+        <td>{{plugin.version}}</td>
+        <td>{{plugin.author}}</td>
+        <td>
+            <button class="btn btn-default btn-xs" ng-click="disable(plugin.name)" title="Disable"><i
+                    class="fa fa-stop"></i></button>
+        </td>
+    </tr>
+    </tbody>
+</table>

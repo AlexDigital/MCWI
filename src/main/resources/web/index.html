@@ -17,7 +17,10 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/#/dashboard">Dashboard</a></li>
+                <li ng-class="{active:isActive('/#/dashboard')}"><a href="/#/dashboard">Dashboard</a></li>
+                <li ng-class="{active:isActive('/#/players')}"><a href="/#/players">Players</a></li>
+                <li ng-class="{active:isActive('/#/worlds')}"><a href="/#/worlds">Worlds</a></li>
+                <li ng-class="{active:isActive('/#/plugins')}"><a href="/#/plugins">Plugins</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -40,7 +43,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Disconnected!</h4>
+                <h4 class="modal-title">Disconnected! Please reload after the modal is closed.</h4>
             </div>
             <div class="modal-body">
                 <div style="text-align: center; font-size: 18pt;"><i class="fa fa-spin fa-refresh"></i></div>

@@ -1,0 +1,29 @@
+<h3>Worlds:</h3>
+<h5>Plugin like Multiverse-Core for world loading recommended</h5>
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>World name</th>
+        <th>Difficulty</th>
+        <th>Seed</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="world in worlds track by $index">
+        <td>{{$index}}</td>
+        <td>{{world.name}}</td>
+        <td>{{world.difficulty}}</td>
+        <td>{{world.seed}}</td>
+        <td>
+            <button class="btn btn-default btn-xs" ng-click="delete(world.name)" title="Remove"><i
+                    class="fa fa-times"></i></button>
+            <button class="btn btn-default btn-xs" ng-click="clone(world.name)" title="Clone"><i
+                    class="fa fa-files-o"></i></button>
+            <button class="btn btn-default btn-xs" ng-click="rename(world.name)" title="Rename"><i
+                    class="fa fa-book"></i></button>
+        </td>
+    </tr>
+    </tbody>
+</table>

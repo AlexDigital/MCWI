@@ -37,6 +37,13 @@ public class WebClientHandler extends SimpleChannelInboundHandler<String> {
         }
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        if (cause instanceof IOException) {
+            return;
+        }
+    }
+
     private String getMimeType(String path, InputStream inputStream) throws IOException {
         String[] splittedPath = path.split("\\.");
         if (splittedPath.length > 1) {

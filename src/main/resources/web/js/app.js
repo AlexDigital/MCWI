@@ -9,11 +9,27 @@ app.config(function ($routeProvider) {
         templateUrl: 'parts/login.html',
         controller: 'loginctrl'
     });
+    $routeProvider.when('/players', {
+        templateUrl: 'parts/players.html',
+        controller: 'playersctrl'
+    });
+    $routeProvider.when('/worlds', {
+        templateUrl: 'parts/worlds.html',
+        controller: 'worldsctrl'
+    });
+    $routeProvider.when('/plugins', {
+        templateUrl: 'parts/plugins.html',
+        controller: 'pluginsctrl'
+    });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
 });
 
 app.run(function ($rootScope, Socket, $cookies, $location) {
     $rootScope.loggedin = false;
+
+    $rootScope.isActive = function (path) {
+        return $location.url() === path;
+    };
 
     $rootScope.$on('$routeChangeStart', function (event, next) {
         if (!$rootScope.loggedin) {
@@ -45,10 +61,9 @@ app.run(function ($rootScope, Socket, $cookies, $location) {
     });
 
     Socket.on('connect', function () {
+        $('#disconnectedModal').modal('hide');
         if ($location.url() !== "/login") {
             console.log("Connected");
-            $('#disconnectedModal').modal('hide');
-            location.reload();
         }
     });
 
@@ -57,19 +72,22 @@ app.run(function ($rootScope, Socket, $cookies, $location) {
     });
 });
 
-app.controller('dashboardctrl', function ($scope, Socket) {
-    $scope.console = [];
-    $scope.users = [];
+app.controller('dashboardctrl', function ($rootScope, $scope, Socket) {
+    $rootScope.console = [];
     var maxCount = 20;
     Socket.on('console', function (data) {
-        if ($scope.console.length == maxCount) $scope.console.shift();
-        $scope.console.push(data.trim().replace(/\[0;..;\d+m/gmi, "").replace(/\[m$/gmi, ""));
+        if ($rootScope.console.length == maxCount) $rootScope.console.shift();
+        $rootScope.console.push(data.trim().replace(/\[0;..;\d+m/gmi, "").replace(/\[m$/gmi, ""));
     });
 
     $scope.sendCommand = function () {
         Socket.emit('console-command', $scope.command);
         $scope.command = "";
     };
+});
+
+app.controller('playersctrl', function ($scope, Socket) {
+    $scope.users = [];
 
     $scope.kick = function (user) {
         Socket.emit('console-command', "kick " + user);
@@ -80,12 +98,53 @@ app.controller('dashboardctrl', function ($scope, Socket) {
     $scope.pardon = function (user) {
         Socket.emit('console-command', "pardon " + user);
     };
+    $scope.op = function (user) {
+        Socket.emit('console-command', "op " + user);
+    };
 
     Socket.emit('request', 'player-list');
     Socket.on('player-list', function (users) {
         $scope.users = users;
     });
+});
 
+app.controller('worldsctrl', function ($scope, Socket) {
+    $scope.worlds = [];
+
+    // TODO Make it with modals
+    $scope.delete = function (name) {
+        if (confirm("Are you sure?")) {
+            Socket.emit('world-action', {action: 'delete', worldName: name});
+        }
+    };
+
+    $scope.clone = function (name) {
+        var to = prompt("Cloned world name:");
+        Socket.emit('world-action', {action: 'clone', worldName: name, to: to});
+    };
+
+    $scope.rename = function (name) {
+        var to = prompt("New world name:");
+        Socket.emit('world-action', {action: 'rename', worldName: name, to: to});
+    };
+
+    Socket.emit('request', 'world-list');
+    Socket.on('world-list', function (worlds) {
+        $scope.worlds = worlds;
+    });
+});
+
+app.controller('pluginsctrl', function ($scope, Socket) {
+    $scope.plugins = [];
+
+    $scope.disable = function (name) {
+        Socket.emit('plugin-disable', name);
+    };
+
+    Socket.emit('request', 'plugin-list');
+    Socket.on('plugin-list', function (plugins) {
+        $scope.plugins = plugins;
+    });
 });
 
 app.controller('loginctrl', function ($scope, $rootScope, $location, $cookies, Socket) {
