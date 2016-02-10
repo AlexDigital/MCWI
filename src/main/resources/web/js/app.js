@@ -1,6 +1,6 @@
 var app = angular.module('app', ['ngRoute', 'ngCookies', 'Services']);
 
-app.config(function ($routeProvider) {
+app.config(function ($routeProvider, $locationProvider) {
     $routeProvider.when('/dashboard', {
         templateUrl: 'parts/dashboard.html',
         controller: 'dashboardctrl'
@@ -21,7 +21,13 @@ app.config(function ($routeProvider) {
         templateUrl: 'parts/plugins.html',
         controller: 'pluginsctrl'
     });
+    $routeProvider.when('/browse', {
+        templateUrl: 'parts/browse.html',
+        controller: 'browsectrl'
+    });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
+
+    $locationProvider.html5Mode(true);
 });
 
 app.run(function ($rootScope, Socket, $cookies, $location) {
@@ -145,6 +151,49 @@ app.controller('pluginsctrl', function ($scope, Socket) {
     Socket.on('plugin-list', function (plugins) {
         $scope.plugins = plugins;
     });
+});
+
+app.controller('browsectrl', function ($scope, Socket) {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.getSession().setMode("ace/mode/text");
+
+    $scope.items = [];
+
+    $scope.browse = function (path) {
+        Socket.emit('item-request', path);
+        $scope.path = path;
+    };
+
+    $scope.delete = function (path) {
+        Socket.emit('item-delete', path);
+    };
+
+    $scope.edit = function (path) {
+        $scope.currentFile = path;
+        Socket.emit('item-edit', path);
+    };
+
+    $scope.save = function () {
+        Socket.emit('item-save', {
+            path: $scope.currentFile,
+            text: editor.getValue()
+        });
+        $('#editModal').modal('hide');
+    };
+
+    Socket.emit('item-request', '.');
+    $scope.path = '/';
+    Socket.on('item-request', function (items) {
+        $scope.items = items;
+    });
+
+    Socket.on('item-edit', function (item) {
+        editor.setValue(item);
+        editor.session.selection.clearSelection();
+        $('#editModal').modal('show');
+    });
+
 });
 
 app.controller('loginctrl', function ($scope, $rootScope, $location, $cookies, Socket) {

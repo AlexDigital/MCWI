@@ -29,7 +29,8 @@ public class WebClientHandler extends SimpleChannelInboundHandler<String> {
                 if (inputStream != null) {
                     httpHandler.sendText(getMimeType(result.getPath(), inputStream), IOUtils.toString(inputStream));
                 } else {
-                    httpHandler.send404();
+                    // httpHandler.send404();
+                    httpHandler.sendText("text/html", IOUtils.toString(McWebinterface.getInstance().getResource("web/index.html")));
                 }
             }
         } else {
@@ -52,6 +53,7 @@ public class WebClientHandler extends SimpleChannelInboundHandler<String> {
                 case "html":
                     return "text/html";
                 case "css":
+                    System.out.println("CSS");
                     return "text/css";
                 case "js":
                     return "text/javascript";

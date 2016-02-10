@@ -1,5 +1,6 @@
 package de.alexdigital.mcwi.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +33,7 @@ public class MCWICommand implements CommandExecutor {
 
     List<String> usage = Arrays.asList(
             "§a------------------------ [§6MCWI§a] ---------------------",
+            "§7- §aWebinterface reachable at " + Bukkit.getServer().getIp() + ":8080",
             "§7- §2/mcwi setlogin [Username] [Password] §6Set login data",
             "§a------------------------ [§6MCWI§a] ---------------------"
     );
