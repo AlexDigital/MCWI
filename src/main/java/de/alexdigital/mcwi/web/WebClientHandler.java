@@ -53,7 +53,6 @@ public class WebClientHandler extends SimpleChannelInboundHandler<String> {
                 case "html":
                     return "text/html";
                 case "css":
-                    System.out.println("CSS");
                     return "text/css";
                 case "js":
                     return "text/javascript";

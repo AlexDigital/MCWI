@@ -92,7 +92,7 @@
                 <version>2.6</version>
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
-                    <outputDirectory>./</outputDirectory>
+                    <outputDirectory>G:\TestServer1.8\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

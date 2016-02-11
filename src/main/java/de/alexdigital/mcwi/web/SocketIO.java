@@ -51,10 +51,6 @@ public class SocketIO {
 
     private void setListeners() {
 
-        this.server.addConnectListener(socketIOClient -> {
-
-        });
-
         // Login with user data
         this.server.addEventListener("login-data", LoginData.class, (socketIOClient, loginData, ackRequest) -> {
             if (McWebinterface.getInstance().getLoginConfig().check(loginData.getUsername(), loginData.getPassword())) {

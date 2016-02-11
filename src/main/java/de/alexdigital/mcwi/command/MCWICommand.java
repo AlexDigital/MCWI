@@ -19,7 +19,7 @@ public class MCWICommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         switch (args.length) {
-            case 3:
+            case 2:
                 if (args[0].equalsIgnoreCase("setlogin")) {
                     setLoginCommand.onCommand(cs, cmd, s, args);
                 }
@@ -34,7 +34,8 @@ public class MCWICommand implements CommandExecutor {
     List<String> usage = Arrays.asList(
             "§a------------------------ [§6MCWI§a] ---------------------",
             "§7- §aWebinterface reachable at " + Bukkit.getServer().getIp() + ":8080",
-            "§7- §2/mcwi setlogin [Username] [Password] §6Set login data",
+            "§7- §2/mcwi setlogin [Password] §6Set login data",
+            "    §aadmin when console, your ingame name when as player",
             "§a------------------------ [§6MCWI§a] ---------------------"
     );
 
