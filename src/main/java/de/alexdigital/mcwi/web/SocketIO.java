@@ -15,9 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -165,7 +163,6 @@ public class SocketIO {
 
         this.server.addEventListener("item-request", String.class, (socketIOClient, path, ackRequest) -> {
             if (this.acceptedClients.contains(socketIOClient.getSessionId())) {
-                System.out.println(path);
                 if (!path.startsWith("../")) {
                     sendFileList(path, socketIOClient);
                 }
