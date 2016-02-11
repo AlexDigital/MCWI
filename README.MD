@@ -5,7 +5,8 @@
 It's easy, just use Maven, go to this directory and run `mvn clean install`
 
 ### How to setup
-Run the command `/mcwi setlogin [Username] [Password]` to create the admin account (max. 1 acc. at the moment)
+Run the command `/mcwi setlogin [Password]` to create an account (Username is admin when you are using the console, and your ingame name when you are using the command as player.
+Permission for the command is `mcwi.setlogin`.
 
 ### How to access
 Navigate to the server IP with the port 8080 and you see the login.
