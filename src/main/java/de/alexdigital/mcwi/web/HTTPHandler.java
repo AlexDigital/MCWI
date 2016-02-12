@@ -70,27 +70,25 @@ public class HTTPHandler {
     public void sendText(String contentType, String text) {
         byte[] bytes = text.getBytes(Charset.forName("UTF-8"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy hh:mm:ss z");
-        String string = "HTTP/1.1 200 OK\n" +
+        String header = "HTTP/1.1 200 OK\n" +
                 "Date: " + simpleDateFormat.format(Calendar.getInstance().getTime()) + "\n" +
                 "Server: MCWI Server - Netty 4\n" +
                 "Last-Modified: " + simpleDateFormat.format(HTTPHandler.lastModified) +
                 "Content-Type: " + contentType + "; charset=UTF-8\n" +
                 "Content-Length: " + bytes.length + "\n" +
                 "Accept-Ranges: bytes\n" +
-                "Connection: close\n\n" +
-                text;
+                "Connection: close\n\n";
 
-        ctx.writeAndFlush(string);
+        ctx.writeAndFlush(header+text);
     }
 
     public void send404() {
         String text = "<html><head><title>Not Found</title></head><body>The item was not found.<br><b>MCWI Server - based on Netty 4</b></body></html>";
-        String string = "HTTP/1.1 404 Not Found\n" +
+        String header = "HTTP/1.1 404 Not Found\n" +
                 "Content-type: text/html\n" +
-                "Content-length: " + text.getBytes().length + "\n\n" +
-                text;
+                "Content-length: " + text.getBytes().length + "\n\n"
 
-        ctx.writeAndFlush(string);
+        ctx.writeAndFlush(header+text);
     }
 
 }
