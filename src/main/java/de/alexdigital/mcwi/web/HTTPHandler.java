@@ -4,6 +4,9 @@ import com.google.common.base.Joiner;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -13,6 +16,17 @@ import java.util.List;
 public class HTTPHandler {
 
     private ChannelHandlerContext ctx;
+    private static long lastModified = 0;
+
+    static {
+        String pathOfPluginJar = null;
+        try {
+            pathOfPluginJar = URLDecoder.decode(HTTPHandler.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+            HTTPHandler.lastModified = new File(pathOfPluginJar).lastModified();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
     public HTTPHandler(ChannelHandlerContext ctx) {
         this.ctx = ctx;
@@ -56,27 +70,27 @@ public class HTTPHandler {
     public void sendText(String contentType, String text) {
         byte[] bytes = text.getBytes(Charset.forName("UTF-8"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy hh:mm:ss z");
-        String stringBuilder = "HTTP/1.1 200 OK\n" +
+        String string = "HTTP/1.1 200 OK\n" +
                 "Date: " + simpleDateFormat.format(Calendar.getInstance().getTime()) + "\n" +
                 "Server: MCWI Server - Netty 4\n" +
-                "Last-Modified: " + simpleDateFormat.format(Calendar.getInstance().getTime()) +
+                "Last-Modified: " + simpleDateFormat.format(HTTPHandler.lastModified) +
                 "Content-Type: " + contentType + "; charset=UTF-8\n" +
                 "Content-Length: " + bytes.length + "\n" +
                 "Accept-Ranges: bytes\n" +
                 "Connection: close\n\n" +
                 text;
 
-        ctx.writeAndFlush(stringBuilder);
+        ctx.writeAndFlush(string);
     }
 
     public void send404() {
         String text = "<html><head><title>Not Found</title></head><body>The item was not found.<br><b>MCWI Server - based on Netty 4</b></body></html>";
-        String stringBuilder = "HTTP/1.1 404 Not Found\n" +
+        String string = "HTTP/1.1 404 Not Found\n" +
                 "Content-type: text/html\n" +
                 "Content-length: " + text.getBytes().length + "\n\n" +
                 text;
 
-        ctx.writeAndFlush(stringBuilder);
+        ctx.writeAndFlush(string);
     }
 
 }
