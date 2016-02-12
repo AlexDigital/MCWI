@@ -232,7 +232,7 @@ app.controller('navctrl', function ($rootScope, $scope, $cookies, Socket) {
 
 angular.module('Services', ['ngRoute']).
 factory('Socket', function ($rootScope, $location) {
-    var socket = io.connect('http://127.0.0.1:8081', {reconnect: true});
+    var socket = io.connect(window.location.host+':8081');
 
     return {
         on: function (eventName, callback) {
