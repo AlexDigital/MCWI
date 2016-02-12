@@ -86,7 +86,7 @@ public class HTTPHandler {
         String text = "<html><head><title>Not Found</title></head><body>The item was not found.<br><b>MCWI Server - based on Netty 4</b></body></html>";
         String header = "HTTP/1.1 404 Not Found\n" +
                 "Content-type: text/html\n" +
-                "Content-length: " + text.getBytes().length + "\n\n"
+                "Content-length: " + text.getBytes().length + "\n\n";
 
         ctx.writeAndFlush(header+text);
     }
